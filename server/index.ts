@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-import { publicProcedure, router } from "./trpc";
-import { PrismaClient } from "@prisma/client";
+import { publicProcedure, router } from './trpc';
+import { PrismaClient } from '@prisma/client';
 
 const prismaGlobal = global as typeof global & {
   prisma?: PrismaClient;
@@ -11,12 +11,12 @@ export const prisma: PrismaClient =
   prismaGlobal.prisma ||
   new PrismaClient({
     log:
-      process.env.NODE_ENV === "development"
-        ? ["query", "error", "warn"]
-        : ["error"],
+      process.env.NODE_ENV === 'development'
+        ? ['query', 'error', 'warn']
+        : ['error'],
   });
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== 'production') {
   prismaGlobal.prisma = prisma;
 }
 

@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
-import Auth0Provider from "next-auth/providers/auth0";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from 'next-auth';
+import Auth0Provider from 'next-auth/providers/auth0';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { AppProviders } from "next-auth/providers/index";
+import { type AppProviders } from 'next-auth/providers/index';
 const {
   AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET,
@@ -11,7 +11,7 @@ const {
   APP_ENV,
 } = process.env;
 
-type Auth0Profile = {
+interface Auth0Profile {
   given_name: string;
   family_name: string;
   nickname: string;
@@ -27,22 +27,22 @@ type Auth0Profile = {
   iat: number;
   exp: number;
   sid: string;
-};
+}
 let useMockProvider = false;
 
 if (
-  (NODE_ENV !== "production" || APP_ENV === "test") &&
+  (NODE_ENV !== 'production' || APP_ENV === 'test') &&
   !(AUTH0_CLIENT_ID && AUTH0_CLIENT_SECRET && AUTH0_ISSUER)
 ) {
-  console.log("⚠️ Using mocked GitHub auth correct credentials were not added");
+  console.log('⚠️ Using mocked GitHub auth correct credentials were not added');
   useMockProvider = true;
 }
 const providers: AppProviders = [];
 if (useMockProvider) {
   providers.push(
     CredentialsProvider({
-      id: "github",
-      name: "Mocked GitHub",
+      id: 'github',
+      name: 'Mocked GitHub',
       async authorize(credentials) {
         if (credentials) {
           const user = {
@@ -55,13 +55,13 @@ if (useMockProvider) {
         return null;
       },
       credentials: {
-        name: { type: "test" },
+        name: { type: 'test' },
       },
     }),
   );
 } else {
   if (!(AUTH0_CLIENT_ID && AUTH0_CLIENT_SECRET && AUTH0_ISSUER)) {
-    throw new Error("Provider secrets must be set");
+    throw new Error('Provider secrets must be set');
   }
   providers.push(
     Auth0Provider({
