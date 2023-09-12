@@ -3,7 +3,7 @@
 import { trpc } from "@/app/_trpc/client";
 
 export default function page() {
-  const data = trpc.getData.useQuery();
+  const data = trpc.getUserCount.useQuery();
   const dataSet = trpc.setData.useMutation();
 
   return (
