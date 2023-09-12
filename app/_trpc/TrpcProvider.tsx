@@ -10,7 +10,7 @@ const url =
     ? "your-production-url/api/trpc"
     : "http://localhost:3000/api/trpc";
 
-export default function Provider({ children }: { children: React.ReactNode }) {
+export default function TrpcProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({}));
   const [trpcClient] = useState(() =>
     trpc.createClient({
