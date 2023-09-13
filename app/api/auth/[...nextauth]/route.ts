@@ -1,7 +1,8 @@
+import { prisma } from '@/server';
 import NextAuth from 'next-auth';
 import Auth0Provider from 'next-auth/providers/auth0';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
+import { PrismaAdapter } from '@auth/prisma-adapter';
 import { type AppProviders } from 'next-auth/providers/index';
 const {
   AUTH0_CLIENT_ID,
@@ -81,6 +82,7 @@ if (useMockProvider) {
 }
 
 const handler = NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers,
 });
 
