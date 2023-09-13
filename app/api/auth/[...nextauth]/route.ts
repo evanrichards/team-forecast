@@ -4,6 +4,7 @@ import Auth0Provider from 'next-auth/providers/auth0';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { type AppProviders } from 'next-auth/providers/index';
+import { env } from 'process';
 const {
   AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET,
@@ -81,9 +82,25 @@ if (useMockProvider) {
   );
 }
 
+const ALLOWED_DOMAINS = env.NODE_ENV === 'production' ? [/loop\.com/] : [/.*/];
+
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers,
+  callbacks: {
+    async signIn({ user }) {
+      const { email: userEmail } = user;
+      const domain = userEmail?.split('@')[1];
+
+      if (
+        !domain ||
+        !ALLOWED_DOMAINS.some((domainRegex) => domainRegex.test(userEmail))
+      ) {
+        return false;
+      }
+      return true;
+    },
+  },
 });
 
 export { handler as GET, handler as POST };
