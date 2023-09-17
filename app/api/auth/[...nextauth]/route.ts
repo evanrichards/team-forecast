@@ -1,10 +1,10 @@
-import { prisma } from '@/server';
 import NextAuth from 'next-auth';
 import Auth0Provider from 'next-auth/providers/auth0';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { type AppProviders } from 'next-auth/providers/index';
 import { env } from 'process';
+import { prisma } from '@/server/db';
 const {
   AUTH0_CLIENT_ID,
   AUTH0_CLIENT_SECRET,
